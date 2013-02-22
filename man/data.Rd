@@ -23,17 +23,19 @@ This gives the survival data generated from log-normal AFT model.}
   \item{Pper}{censoring percentage}
 }
 \references{
-Khan, M. H. R. and Shaw, J. E. H. (2012). On some aspects of dealing with the last
-largest censored observations under weighted least squares (Preprint).
+Khan, M. H. R. and Shaw, J. E. H. (2012a). On dealing with censored largest observations under weighted least squares (Preprint).
 }
 \author{
 Hasinur Rahaman Khan and Ewart Shaw}
 
 \examples{
-#Dataset with zero correlation between the covariates and the medium censoring level (50 percent) 
+#Dataset with zero correlation between the covariates and the medium censoring level 
+#(50 percent) 
 data<-data(n=100, p=2, r=0, b1=c(2,4), sig=1, Cper=0)
 data
-#Dataset with moderate correlation between the covariates and the higher censoring level (70 percent) 
+
+#Dataset with moderate correlation between the covariates and the higher censoring level 
+#(70 percent) 
 data.r<-data(n=100, p=2, r=0.5, b1=c(2,4), sig=1, Cper=0.2)
 data.r
 }

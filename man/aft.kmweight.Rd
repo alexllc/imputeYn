@@ -4,9 +4,9 @@
 \title{Compute Kaplan-Meier weights}
 \description{Compute Kaplan-Meier weights that are used for weighted least squares to solve the AFT model under right censoring. This gives weights that are computed after implementation of Efron's (1967) tail correction.}
 \usage{
-aft.kmweight(y, delta)}
+aft.kmweight(Y, delta)}
 \arguments{
-  \item{y}{survival time.}
+  \item{Y}{survival time.}
   \item{delta}{status.}
 }
 \value{The Kaplan-Meier weights are proper in the sense that they sum one. The censoring considered here is right censoring only.

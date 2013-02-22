@@ -1,10 +1,10 @@
-aft.kmweight<-function(y, delta)
+aft.kmweight<-function(Y, delta)
 	{
-	srt<-order(y)
-	sy<-as.double(y[srt])
+	srt<-order(Y)
+	sy<-as.double(Y[srt])
 	sdelta<-as.integer(delta[srt])
 	n <- length(sdelta)
-	if(n != length(sdelta) || n != length(y))
+	if(n != length(sdelta) || n != length(Y))
 	stop("dimensions of Y and delta don't match!")
 	kmweights <- numeric(n)
 	kmweights[1] <- 1/n
@@ -120,11 +120,11 @@ lss.mod<-function(formula, data, subset, trace=FALSE, mcsize=500, maxiter=10, to
 	mf[[1]] <- as.name("model.frame")
 	mf <- eval(mf, sys.parent())
 	Terms <- attr(mf, "terms")
-	#xvars <- as.character(attr(Terms, "variables"))
-	#yvar <- attr(Terms, "response")
-	#if((yvar <- attr(Terms, "response")) > 0)
-	#	xvars <- xvars[ - yvar]
-	#else xlevels <- NULL
+	xvars <- as.character(attr(Terms, "variables"))
+	yvar <- attr(Terms, "response")
+	if((yvar <- attr(Terms, "response")) > 0)
+		xvars <- xvars[ - yvar]
+	else xlevels <- NULL
 	y <- model.extract(mf,response)
 	x <- model.matrix(Terms, mf)
 	if(all(x[, 1] == 1))
@@ -213,12 +213,24 @@ lss.mod<-function(formula, data, subset, trace=FALSE, mcsize=500, maxiter=10, to
 
 imputeYn<-function(X, Y, delta, method = "condMean", beta=NULL)
     {
+    nn <- length(Y) # number of samples
+    srt<-order(Y) 
+    sdelta<-as.integer(delta[srt])
+    if(sdelta[nn]!=0)
+    stop("The largest observation is not censored!")
+
+	if(method=="PDQ"){
+	beta<-NULL
+	n<-nrow(Y)}
+	else
+      {
 	call <- match.call()
 	n <- nrow(X) # number of samples
 	p <- ncol(X) # number of predictors
     	if (is.null(beta))
 	beta <- c(aft.qp(X,Y,delta)$beta0,aft.qp(X,Y,delta)$beta)
 	delta[n]<-1
+      }
 
     condMean<-function(X, Y, delta, beta) 
         {
@@ -318,47 +330,27 @@ imputeYn<-function(X, Y, delta, method = "condMean", beta=NULL)
 	return(ystar[kk])
 	   }
 
-    impute.y <- function(X, Y, delta) 
-        {
+    pred.diff <- function(Y, delta) {
+  	sorted<-order(Y) 
+  	Y<-as.double(Y[sorted])
+  	delta<-as.integer(delta[sorted])
   	status <- delta
   	yy <- Y
-  	x <- as.matrix(X)
-  	if(all(x[, 1] == 1))
-    	x <- x[, -1, drop = FALSE]
-  	d <- dim(x)
-  	nvar <- d[2]
-  	if(length(nvar) == 0)
-    	nvar <- 0
   	N <- length(yy)
-  	if(nvar > 0) 
-		{
-    	xbar <- apply(x, 2, mean)
-    	xm <- x - rep(xbar, rep(N, nvar))
-  		} else { xm <- 0 }
   	timeorig <- yy
   	order.orig <- 1:N
   	dummystrat <- factor(rep(1, N))
-  	betahat <- rep(0, max(nvar, 1))
-  	betamatrix <- NULL
   	sse <- 0
   	n <- 0	
   	nonconv <- FALSE	
-  	oldbeta <- betahat
   	oldsse <- sse
   	one <- rep(1, N)
-  	normx <- sqrt(drop(one %*% (x^2)))
-  	normalize = T
-  	if (normalize==F) 
-		{
-    	normx <- rep(1, nvar)
-  		}
-  	x <- scale(x, FALSE, normx)
   	state <- status
   	state[yy == max(yy)] <- 1
   	m2 <- order(yy)
   	yy.order <- yy[m2]
   	surv.obj <- Surv(yy,state)~1
-  	KM.hat <- KM.ehat <- survfit(surv.obj,type="kaplan-meier",conf.type = "none", se.fit = FALSE)
+	KM.hat <- KM.ehat <- survfit(surv.obj,type="kaplan-meier",conf.type = "none", se.fit = FALSE)
   	n.risk <- KM.ehat$n.risk
   	surv <- KM.ehat$surv
   	repeats <- c(diff( - n.risk), n.risk[length(n.risk)])
@@ -367,10 +359,9 @@ imputeYn<-function(X, Y, delta, method = "condMean", beta=NULL)
   	m2 <- order(Y)
   	log.y.order <- yy[m2]
   	bla <- NA
-  	for(iiii in 1:length(log.y.order)) 
-		{
-    		bla[iiii] <- sum((log.y.order*w)[-(1:iiii)])
-  		}
+  	for(iiii in 1:length(log.y.order)) {
+    	bla[iiii] <- sum((log.y.order*w)[-(1:iiii)])
+  	}
   	bla2 <- bla/surv
   	bl <- bla2
   	bl[(1:N)[m2]] <- bla2
@@ -380,10 +371,24 @@ imputeYn<-function(X, Y, delta, method = "condMean", beta=NULL)
   	yy.imp <- yhat[state==0]
   	le<-length(yy.imp)
   	med.dev <-sum(abs(yy.imp-median(yy.imp)))/le
+  	yy.cens<-yy[state==0]
+  	diff<-yy.imp-yy.cens
   	f <- list()
-  	f$yyN<-yy.new[N]+med.dev
+  	f$Ynew<-yy.new
+  	f$Ycens<-yy.cens
+  	f$imp<-yy.imp
+  	f$diff<-diff
+  	D<-f$diff[1:(length(f$diff)-0)]
+  	Censored.Y<-f$Ycens[1:(length(f$Ycens)-0)]
+  	Ymax<-f$Ynew[length(f$Ynew)]
+  	w<-1/(Ymax-Censored.Y)
+  	reg<-lm(D~Censored.Y, weights=w)
+  	diff.pred<-reg$coefficients[1]+reg$coefficients[2]*Ymax
+  	Ymax.hat<-Ymax+diff.pred
+  	f$diff.pred<-diff.pred
+  	f$yyN<-Ymax.hat
   	f
-	   }
+}
 
 	if(method == "condMean"){
 	Y[n]<-condMean(X,Y,delta,beta)
@@ -401,10 +406,9 @@ imputeYn<-function(X, Y, delta, method = "condMean", beta=NULL)
 	Y[n]<-RcondMedian(X,Y,delta)
 	newbeta <- aft.qp(X,Y,delta)$beta}
 
-	else if(method == "MAD"){
-	Y[n]<-impute.y(X,Y,delta)$yyN
-	newbeta <- aft.qp(X,Y,delta)$beta}
-
+	else if(method == "PDQ"){
+	Y[n]<-pred.diff(Y,delta)$yyN
+	newbeta <- NULL}
 	else stop("invalid treating method for Y(n)+")
 	weighting=list(Yn=Y[n],newdata=cbind(Y=Y,delta=delta),newcoefficients=newbeta,coefficients=beta[-1])
 	class(weighting)<-("imputeYn")
@@ -430,8 +434,158 @@ print.imputeYn<-function(x, digits = max(3, getOption("digits") - 3), ...)
 	cat("\n")
 	}
 
-	
 
+imputeYn.extra<-function(Y, delta, hc.Yn, method = "km.TPQ", trans.sprob=NULL, stime2=NULL, sprob2=NULL, trace=F)
+    {
+    nn <- length(Y) # number of samples
+    srt<-order(Y) 
+    sdelta<-as.integer(delta[srt])
+    if(sdelta[nn]!=0)
+    stop("The largest observation is not censored!")
+
+    it.pred.diff<-function(Y, delta, hc.Yn, trace)
+	{
+	pred.diff <- function(Y, delta) {
+  	sorted<-order(Y) 
+  	Y<-as.double(Y[sorted])
+  	delta<-as.integer(delta[sorted])
+  	status <- delta
+  	yy <- Y
+  	N <- length(yy)
+  	timeorig <- yy
+  	order.orig <- 1:N
+  	dummystrat <- factor(rep(1, N))
+  	sse <- 0
+  	n <- 0	
+  	nonconv <- FALSE	
+  	oldsse <- sse
+  	one <- rep(1, N)
+  	state <- status
+  	state[yy == max(yy)] <- 1
+  	m2 <- order(yy)
+  	yy.order <- yy[m2]
+  	surv.obj <- Surv(yy,state)~1
+  	KM.hat <- KM.ehat <- survfit(surv.obj,type="kaplan-	meier",conf.type = "none", se.fit = FALSE)
+  	n.risk <- KM.ehat$n.risk
+  	surv <- KM.ehat$surv
+  	repeats <- c(diff( - n.risk), n.risk[length(n.risk)])
+  	surv <- rep(surv, repeats)
+  	w <-  - diff(c(1, surv))
+  	m2 <- order(Y)
+  	log.y.order <- yy[m2]
+  	bla <- NA
+  	for(iiii in 1:length(log.y.order)) {
+    	bla[iiii] <- sum((log.y.order*w)[-(1:iiii)])
+  	}
+  	bla2 <- bla/surv
+  	bl <- bla2
+  	bl[(1:N)[m2]] <- bla2
+  	yhat <- bl
+  	yy.new <- yy
+  	yy.new[state == 0] <- yhat[state == 0]
+  	yy.imp <- yhat[state==0]
+  	le<-length(yy.imp)
+  	med.dev <-sum(abs(yy.imp-median(yy.imp)))/le
+  	yy.cens<-yy[state==0]
+  	diff<-yy.imp-yy.cens
+  	f <- list()
+  	f$Ynew<-yy.new
+  	f$Ycens<-yy.cens
+  	f$imp<-yy.imp
+  	f$diff<-diff
+  	D<-f$diff[1:(length(f$diff)-0)]
+  	Censored.Y<-f$Ycens[1:(length(f$Ycens)-0)]
+  	Ymax<-f$Ynew[length(f$Ynew)]
+  	w<-1/(Ymax-Censored.Y)
+  	reg<-lm(D~Censored.Y, weights=w)
+  	diff.pred<-reg$coefficients[1]+reg$coefficients[2]*Ymax
+  	Ymax.hat<-Ymax+diff.pred
+  	f$diff.pred<-diff.pred
+  	f$yyN<-Ymax.hat
+  	f
+    }
+
+     sfit<- survfit(Surv(Y, delta == 1) ~ 1)
+	im<-pred.diff(Y, delta)
+	D<-im$diff[1:(length(im$diff))]
+	Censored.Y<-im$Ycens[1:(length(im$Ycens))]
+	max<-hc.Yn[1]
+	w<-1/(max-Censored.Y)
+	reg<-lm(D~Censored.Y, weights=w)
+	im.hc.Yn<-NULL
+      for (i in 1:(length(hc.Yn)-1))
+        {
+	  im.hc.Yn[1]<-hc.Yn[1]+reg$coefficients[1]+reg$coefficients[2]*hc.Yn[1]
+	  im.hc.Yn[i+1]<-im.hc.Yn[i]+reg$coefficients[1]+reg$coefficients[2]*im.hc.Yn[i]
+	  }	
+	sorted<-order(Y) 
+	sY<-Y[sorted]
+	sdelta<-delta[sorted]
+	cobs<-(length(sY)-length(hc.Yn)+1):length(sY)
+	sY[cobs]<-im.hc.Yn
+	sdelta[cobs]<-1
+      sfit2<- survfit(Surv(sY, sdelta == 1) ~ 1)
+	if(trace){
+	par(mfrow=c(1,2))
+	pl<-plot(sfit,col=3,xlab="Survival time", ylab="Survival probability",main="For original data",cex=0.75)
+	p2<-plot(sfit2,col=3,xlab="Survival time", ylab="Survival probability",main="For data with imputation",cex=0.75)}      
+	return(list(Y=Y[sorted], delta=delta[sorted], newY=sY, newdelta=sdelta, hc.Yn=hc.Yn, im.hc.Yn=im.hc.Yn, trace=trace))
+} 
+   
+
+km.trend.pred<-function(Y, delta, hc.Yn, trans.sprob=NULL, stime2=NULL, sprob2=NULL, trace)
+	{
+	k<-nchar(length(hc.Yn))
+      sfit<- survfit(Surv(Y, delta == 1) ~ 1)
+      stime<-stime.extra<-sfit$time
+      sprob<-sprob.extra<-sfit$surv
+      if (is.null(stime2))
+ 	{stime<-stime
+      sprob<-sprob}     
+	else
+      {stime<-stime2
+      sprob<-sprob2}
+      reg<-lm(stime~sprob)
+      sprob.more<-0:(sprob.extra[length(sprob.extra)]*10^k)
+	sprob.sample<-sample(sprob.more,length(hc.Yn))/10^k
+	if(is.null(trans.sprob))
+	sprob.sample<-sprob.sample
+	else if (trans.sprob=="exp")
+	sprob.sample<-exp(sprob.sample)
+	else
+	sprob.sample<-sprob.sample^trans.sprob
+	imp.hc.Yn<-NULL
+        for (i in 1:length(sprob.sample))
+         {
+        imp.hc.Yn[i]<-reg$coefficients[1]+reg$coefficients[2]*sprob.sample[i]
+         }
+	sorted<-order(Y) 
+	sY<-Y[sorted]
+	sdelta<-delta[sorted]
+	cobs<-(length(sY)-length(hc.Yn)+1):length(sY)
+	sY[cobs]<-sort(imp.hc.Yn)
+	sdelta[cobs]<-1
+      sfit2<- survfit(Surv(sY, sdelta == 1) ~ 1)
+	if(trace){
+	par(mfrow=c(1,2))
+	pl<-plot(sfit,col=3,xlab="Survival time", ylab="Survival probability",main="For original data",cex=0.75)
+	p2<-plot(sfit2,col=3,xlab="Survival time", ylab="Survival probability",main="For data with imputation",cex=0.75)}      
+	return(list(Y=Y[sorted], delta=delta[sorted], newY=sY, newdelta=sdelta, hc.Yn=hc.Yn, imp.hc.Yn=sort(imp.hc.Yn), stime=stime.extra,sprob=sprob.extra,
+	stime2=stime2, sprob2=sprob2, trans=trans.sprob, trace=trace))
+}
+
+
+	if(method == "it.PDQ"){
+     it.PDQ<-it.pred.diff(Y, delta, hc.Yn, trace)
+	return(it.PDQ)}
+
+	else if(method == "km.TPQ"){
+	km.TPQ<-km.trend.pred(Y, delta, hc.Yn, trans.sprob=NULL, 	stime2=NULL, sprob2=NULL,  trace)
+	return(km.TPQ)}
+
+	else stop("invalid additional imputing method for imputing more than 	one Y(n)+ observation")
+}
+	
 data<-function(n, p, r, b1, sig, Cper)
 	{
       r.imp<-function(a,r)

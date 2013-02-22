@@ -3,7 +3,7 @@
 
 \title{Print the important components of the class "imputeYn"}
 \description{
-Print the imputed value for the last largest censored datum, the coefficients of the covariates with or without the imputed value. The coefficients that consider the imputated value are labelled as "new coefficients."
+Print the imputed value for the censored largest datum, the coefficients of the covariates with or without the imputed value. The coefficients that consider the imputated value are labelled as "new coefficients."
 }
 \usage{
 \method{print}{imputeYn}(x, digits = max(3, getOption("digits") - 3), ...)
@@ -15,11 +15,10 @@ Print the imputed value for the last largest censored datum, the coefficients of
 }
 
 \value{
-Gives three important components of the class "imputeYn"- the imputed value for the last largest censored datum, coefficients of the covariates after tail correction, and coefficients of the covariates for dataset with imputated last datum}
+Gives three important components of the class "imputeYn"- the imputed value for the last largest censored datum, coefficients of the covariates after tail correction, and coefficients of the covariates for dataset with imputed last datum.}
 
 \references{
-Khan, M. H. R. and Shaw, J. E. H. (2012). On some aspects of dealing with the last
-largest censored observations under weighted least squares (Preprint).
+Khan, M. H. R. and Shaw, J. E. H. (2012a). On dealing with censored largest observations under weighted least squares (Preprint).
 }
 
 \author{

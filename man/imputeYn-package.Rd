@@ -1,6 +1,6 @@
 \name{imputeYn-package}
 \docType{package}
-\title{Imputing the last largest censored datum under weighted least squares
+\title{Imputing the censored largest observation/observations under weighted least squares
 }
 \description{
 If Kaplan-Meier weights are involved in modeling, especially solving AFT model using weighted least squares method, the package gives alternative choices to the Efron's tail correction approach that brings estimates with less bias and more efficiency
@@ -9,8 +9,8 @@ If Kaplan-Meier weights are involved in modeling, especially solving AFT model u
 \tabular{ll}{
 Package: \tab imputeYn\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2012-04-09\cr
+Version: \tab 1.1\cr
+Date: \tab 2013-02-22\cr
 License: \tab GPL\cr
 Depends:\tab emplik, mvtnorm, quadprog, survival\cr
 }
@@ -24,10 +24,9 @@ Efron, B. (1967). The two sample problem with censored data. In Proceedings of t
 
 Jin, Z., Lin, D. Y., & Ying, Z. (2006). On least-squares regression with censored data. Biometrika, 93 (1), 147-161.
 
-Khan, M. H. R. and Shaw, J. E. H. (2012). On some aspects of dealing with the last
-largest censored observations under weighted least squares (Preprint).
+Khan, M. H. R. and Shaw, J. E. H. (2012a). On dealing with censored largest observations under weighted least squares (Preprint).
 
-Khan, M. H. R., and Shaw, J. E. H. (2012). Variable selection for the AFT model in high dimensions via regularized weighted least squares method (Preprint).
+Khan, M. H. R., and Shaw, J. E. H. (2012b). Variable selection for the AFT model in high dimensions via regularized weighted least squares method (Preprint).
 
 Stute, W. (1993). Consistent estimation under random censorship when covariables are available. Journal of Multivariate Analysis, 45 , 89-103.
 }

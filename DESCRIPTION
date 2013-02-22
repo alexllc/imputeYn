@@ -1,9 +1,9 @@
 Package: imputeYn
 Type: Package
-Title: Imputing the last largest censored datum under weighted least
-        squares
-Version: 1.0
-Date: 2012-05-05
+Title: Imputing the last largest censored observation/observations
+        under weighted least squares
+Version: 1.1
+Date: 2013-02-22
 Author: Hasinur Rahaman Khan and Ewart Shaw
 Maintainer: Hasinur Rahaman Khan <hasinurkhan@gmail.com>
 Description: If Kaplan-Meier weights are involved in modeling,
@@ -11,8 +11,10 @@ Description: If Kaplan-Meier weights are involved in modeling,
         method, the package gives alternative choices to the Efron's
         tail correction approach that brings estimates with less bias
         and more efficiency
-Depends: emplik, mvtnorm, quadprog, survival
+Depends: quadprog, emplik, mvtnorm
+Suggests: survival
 License: GPL-2
-Packaged: 2012-05-05 11:51:11 UTC; hasinur
+Packaged: 2013-02-24 11:44:25 UTC; hasinur
+NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2012-05-06 06:57:55
+Date/Publication: 2013-02-24 14:07:55
