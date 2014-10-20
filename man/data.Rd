@@ -23,7 +23,7 @@ This gives the survival data generated from log-normal AFT model.}
   \item{Pper}{censoring percentage}
 }
 \references{
-Khan, M. H. R. and Shaw, J. E. H. (2012a). On dealing with censored largest observations under weighted least squares (Preprint).
+Khan and Shaw. (2013a). On Dealing with Censored Largest Observations under Weighted Least Squares. CRiSM working paper, Department of Statistics, University of Warwick, UK, No. 13-07. Also available in \url{http://arxiv.org/abs/1312.2533}.
 }
 \author{
 Hasinur Rahaman Khan and Ewart Shaw}

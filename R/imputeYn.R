@@ -125,7 +125,7 @@ lss.mod<-function(formula, data, subset, trace=FALSE, mcsize=500, maxiter=10, to
 	if((yvar <- attr(Terms, "response")) > 0)
 		xvars <- xvars[ - yvar]
 	else xlevels <- NULL
-	y <- model.extract(mf,response)
+	y <- model.extract(mf,"response")
 	x <- model.matrix(Terms, mf)
 	if(all(x[, 1] == 1))
 		x <- x[, -1]			

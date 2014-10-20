@@ -4,7 +4,7 @@
 \title{
 Impute them if there are more than one censored largest observations including tied under weighted least squares method and right censoring}
 \description{
-The method is developed for imputing the largest censored observations (can be seen often for heavy censored data) if Kaplan-Meier weights are involved in modeling. For example, if weighted least squares is used then the extra imputing methods will provide one step ahead of the Efron's (1967) tail correction approach. These methods satisfy the Efron's tail correction, achieve less biased estimates, and impute the largest censored observations that are also tied. Furthermore the two methods satisfy the right censoring assumption. Details are discussed in Khan and Shaw (2012a).
+The method is developed for imputing the largest censored observations (can be seen often for heavy censored data) if Kaplan-Meier weights are involved in modeling. For example, if weighted least squares is used then the extra imputing methods will provide one step ahead of the Efron's (1967) tail correction approach. These methods satisfy the Efron's tail correction, achieve less biased estimates, and impute the largest censored observations that are also tied. Furthermore the two methods satisfy the right censoring assumption. Details are discussed in Khan and Shaw (2013a).
 }
 
 \usage{
@@ -23,7 +23,7 @@ status; it includes value 1 for uncensored and value 0 for censored subject.
 set of the lifetimes for the last largest censored observations.
 }
   \item{method}{
-one of "it.PDQ" (repeated predicted difference quantity or called iterative (Khan and Shaw, 2012a)), "km.TPQ" (Kaplan-Meier trend predicted quantity or called "extrapolation" (Khan and Shaw, 2012a)). Default is "km.TPQ".
+one of "it.PDQ" (repeated predicted difference quantity or called iterative (Khan and Shaw, 2013a)), "km.TPQ" (Kaplan-Meier trend predicted quantity or called "extrapolation" (Khan and Shaw, 2012a)). Default is "km.TPQ".
 }
   \item{trans.sprob}{
 use only for "km.TPQ". Transformation for the survival probabilities. This transformation is needed if survival probability versus survival time plot is not linear. It takes "exp" for exponential transformation, and any value for respective power transformation. Default is NULL.
@@ -47,9 +47,9 @@ It includes sorted lifetimes, censoring indicators, sorted lifetimes after imput
 \references{
 Efron, B. (1967). The two sample problem with censored data. In Proceedings of the fifth Berkeley symposium on mathematical statistics and probability, Vol. 4, p. 831-853.
 
-Khan, M. H. R. and Shaw, J. E. H. (2012a). On dealing with censored largest observations under weighted least squares (Preprint).
+Khan and Shaw. (2013a). On Dealing with Censored Largest Observations under Weighted Least Squares. CRiSM working paper, Department of Statistics, University of Warwick, UK, No. 13-07. Also available in \url{http://arxiv.org/abs/1312.2533}.
 
-Khan, M. H. R., and Shaw, J. E. H. (2012b). Variable selection for the AFT model in high dimensions via regularized weighted least squares method (Preprint).
+Khan and Shaw (2013b). Variable Selection with The Modified Buckley-James Method and The Dantzig Selector for High-dimensional Survival Data. Proceedings 59th ISI World Statistics Congress, 25-30 August 2013, Hong Kong, p. 4239-4244.
 }
 \author{
 Hasinur Rahaman Khan and Ewart Shaw}

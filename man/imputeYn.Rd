@@ -4,7 +4,7 @@
 \title{
 Impute/treat the censored largest datum under weighted least squares method and right censoring}
 \description{
-The method is developed only for imputing the last largest censored datum if Kaplan-Meier weights are involved in modeling. The treating/imputing methods for the last largest censored datum under weighted least squares is developed for overcoming the problem that the tail correction (Efron, 1967) results in biased and inefficient estimates. Details are discussed in Khan and Shaw (2012a).
+The method is developed only for imputing the last largest censored datum if Kaplan-Meier weights are involved in modeling. The treating/imputing methods for the last largest censored datum under weighted least squares is developed for overcoming the problem that the tail correction (Efron, 1967) results in biased and inefficient estimates. Details are discussed in Khan and Shaw (2013a).
 }
 \usage{
 imputeYn(X, Y, delta, method = "condMean", beta = NULL)
@@ -26,7 +26,7 @@ coefficients of the covariates estimated by any suitable method chosen by the us
 }
 
 \details{
-For details, see Khan and Shaw (2012a, 2012b).
+For details, see Khan and Shaw (2013a, 2013b).
 }
 \value{
 An "imputeYn" object is returned. It includes imputed value for the datum Y(n)+, response with imputed value for Y(n)+, status after reclassifying Y(n)+ into Y(n), coefficients of the covariates obtained with imputed value (newcoefficients) by aft.qp, and coefficients obtained without imputed value (coefficients) by aft.qp. 
@@ -35,10 +35,9 @@ An "imputeYn" object is returned. It includes imputed value for the datum Y(n)+,
 \references{
 Efron, B. (1967). The two sample problem with censored data. In Proceedings of the fifth Berkeley symposium on mathematical statistics and probability, Vol. 4, p. 831-853.
 
-Khan, M. H. R. and Shaw, J. E. H. (2012a). On dealing with censored largest observations under weighted least squares (Preprint).
+Khan and Shaw. (2013a). On Dealing with Censored Largest Observations under Weighted Least Squares. CRiSM working paper, Department of Statistics, University of Warwick, UK, No. 13-07. Also available in \url{http://arxiv.org/abs/1312.2533}.
 
-Khan, M. H. R., and Shaw, J. E. H. (2012b). Variable selection for the AFT model in high dimensions via regularized weighted least squares method (Preprint).
-
+Khan and Shaw (2013b). Variable Selection with The Modified Buckley-James Method and The Dantzig Selector for High-dimensional Survival Data. Proceedings 59th ISI World Statistics Congress, 25-30 August 2013, Hong Kong, p. 4239-4244.
 }
 \author{
 Hasinur Rahaman Khan and Ewart Shaw

@@ -5,7 +5,7 @@
 The modified least squares pricnciple for solving the AFT model
 }
 \description{
-This is a modified version of the package `lss' developed by Jin, Lin and Ying (2006). The Least squares principle is developed for solving the AFT model with possibly right censored data. The modification is done by introducing a ridge estimator as an initial estimator that takes into account the correlation between the covariates and censoring information while optimizing using quadratic programming. 
+This is a modified version of the package \pkg{lss} developed by Jin et al. (2006). The Least squares principle is developed for solving the AFT model with possibly right censored data. The modification is done by introducing a ridge estimator as an initial estimator that takes into account the correlation between the covariates and censoring information while optimizing using quadratic programming. 
 }
 \usage{
 lss.mod(formula, data, subset, trace = FALSE, mcsize = 500, maxiter = 10, 
@@ -47,9 +47,9 @@ The covariance matrices of the least-squares estimator, if cov is set to T.
 }
 
 \references{
-Jin, Z., Lin, D. Y., & Ying, Z. (2006). On least-squares regression with censored data. Biometrika, 93 (1), 147-161.
+Jin et al. (2006). On least-squares regression with censored data. Biometrika, 93 (1), 147-161.
 
-Khan, M. H. R. and Shaw, J. E. H. (2012a). On dealing with censored largest observations under weighted least squares (Preprint).
+Khan and Shaw. (2013a). On Dealing with Censored Largest Observations under Weighted Least Squares. CRiSM working paper, Department of Statistics, University of Warwick, UK, No. 13-07. Also available in \url{http://arxiv.org/abs/1312.2533}.
 }
 
 \author{

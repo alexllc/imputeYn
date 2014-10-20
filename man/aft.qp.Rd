@@ -3,7 +3,7 @@
 
 \title{Fit regularized weighted least squares method by quadratic programming for AFT model 
 }
-\description{The AFT model is solved using weighted least squares with ridge penalty and censoring constraints (Khan and Shaw, 2012b). The optimization is based on quadratic programming that facilitates incorporating additional censoring constraints into the model}
+\description{The AFT model is solved using weighted least squares with ridge penalty and censoring constraints (Khan and Shaw, 2013b). The optimization is based on quadratic programming that facilitates incorporating additional censoring constraints into the model}
 \usage{
 aft.qp(X, Y, delta)
 }
@@ -20,9 +20,9 @@ Only gives the parameter estimates as below
 }
 
 \references{
-Khan, M. H. R. and Shaw, J. E. H. (2012a). On dealing with censored largest observations under weighted least squares (Preprint).
+Khan and Shaw. (2013a). On Dealing with Censored Largest Observations under Weighted Least Squares. CRiSM working paper, Department of Statistics, University of Warwick, UK, No. 13-07. Also available in \url{http://arxiv.org/abs/1312.2533}.
 
-Khan, M. H. R., and Shaw, J. E. H. (2012b). Variable selection for the AFT model in high dimensions via regularized weighted least squares method (Preprint)
+Khan and Shaw (2013b). Variable Selection with The Modified Buckley-James Method and The Dantzig Selector for High-dimensional Survival Data. Proceedings 59th ISI World Statistics Congress, 25-30 August 2013, Hong Kong, p. 4239-4244.
 }
 
 \author{
