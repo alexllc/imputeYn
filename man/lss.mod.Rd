@@ -2,10 +2,10 @@
 \alias{lss.mod}
 
 \title{
-The modified least squares pricnciple for solving the AFT model
+Modified Least Squares Pricnciple for Solving the AFT Model
 }
 \description{
-This is a modified version of the package \pkg{lss} developed by Jin et al. (2006). The Least squares principle is developed for solving the AFT model with possibly right censored data. The modification is done by introducing a ridge estimator as an initial estimator that takes into account the correlation between the covariates and censoring information while optimizing using quadratic programming. 
+This provides modified results as the package \pkg{lss} developed by Jin et al. (2006). 
 }
 \usage{
 lss.mod(formula, data, subset, trace = FALSE, mcsize = 500, maxiter = 10, 
@@ -41,6 +41,9 @@ takes two value TRUE or FALSE. Default is FALSE. If TRUE then it shows the resid
 
 }
 
+\details{This is a modified version of the package \pkg{lss} developed by Jin et al. (2006). The Least squares principle is developed for solving the AFT model with possibly right censored data. The modification is done by introducing a ridge estimator as an initial estimator that takes into account the correlation between the covariates and censoring information while optimizing using quadratic programming. 
+}
+
 \value{
 The least-squares estimator, the standard error of the least-squares estimator, the Z score and the p-value for testing the hypothesis of beta=0.
 The covariance matrices of the least-squares estimator, if cov is set to T.
@@ -61,16 +64,17 @@ Hasinur Rahaman Khan and Ewart Shaw
 
 \examples{
 # For uncorrelated datset with four covariates and 50 percent censoring 
-data<-data(n=100, p=4, r=0, b1=c(2,2,3,3), sig=1, Cper=0)
-\donttest{fit.lss.mod<-lss.mod(cbind(data$y, data$delta) ~ da$x,mcsize=500,trace=FALSE,maxiter=50,
+data1<-data(n=100, p=4, r=0, b1=c(2,2,3,3), sig=1, Cper=0)
+require(package="quadprog")
+\dontrun{fit.lss.mod<-lss.mod(cbind(data1$y, data1$delta) ~ data1$x,mcsize=500,trace=FALSE,maxiter=50,
  tolerance=0.01)}
-\donttest{fit.lss.mod}
+\dontrun{fit.lss.mod}
 
 # For correlated datset with 50 percent censoring 
 data2<-data(n=100, p=4, r=0.5, b1=c(2,2,3,3), sig=1, Cper=0)
-\donttest{fit.lss.mod2<-lss.mod(cbind(data2$y, data2$delta) ~ data2$x, mcsize=500,trace=FALSE,
+\dontrun{fit.lss.mod2<-lss.mod(cbind(data2$y, data2$delta) ~ data2$x, mcsize=500,trace=FALSE,
  maxiter=50, tolerance=0.01)}
-\donttest{fit.lss.mod2}
+\dontrun{fit.lss.mod2}
 }
 \keyword{least-squares
 }

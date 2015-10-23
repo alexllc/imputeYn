@@ -1,18 +1,16 @@
 \name{imputeYn-package}
 \docType{package}
-\title{Imputing the Last Largest Censored Observation(s) under Weighted Least Squares
+\title{Imputing the Last Largest Censored Observation(s) Under Weighted Least Squares
 }
-\description{
-If Kaplan-Meier weights are involved in modeling, especially solving AFT model using weighted least squares method, the package gives alternative choices to the Efron's tail correction approach that brings estimates with less bias and more efficiency
-}
+\description{Method brings less bias and more efficient estimates for AFT models.}
 \details{
 \tabular{ll}{
 Package: \tab imputeYn\cr
 Type: \tab Package\cr
-Version: \tab 1.2\cr
-Date: \tab 2014-10-20\cr
+Version: \tab 1.3\cr
+Date: \tab 2015-10-23\cr
 License: \tab GPL\cr
-Depends:\tab emplik, mvtnorm, quadprog, survival\cr
+Depends:\tab emplik, mvtnorm, quadprog, survival, boot\cr
 }
 }
 \author{
@@ -33,7 +31,7 @@ Stute, W. (1993). Consistent estimation under random censorship when covariables
 \keyword{ package }
 \examples{
 #For uncorrelated dataset
-data<-data(n=100, p=4, r=0, b1=c(2,2,3,3), sig=1, Cper=0)
-imp<-imputeYn(data$x, data$y, data$delta, method = "condMean", beta=NULL)
+data1<-data(n=100, p=4, r=0, b1=c(2,2,3,3), sig=1, Cper=0)
+imp<-imputeYn(data1$x, data1$y, data1$delta, method = "condMean", beta=NULL)
 imp
 }

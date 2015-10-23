@@ -2,9 +2,9 @@
 \alias{imputeYn}
 
 \title{
-Impute/treat the censored largest datum under weighted least squares method and right censoring}
+Imputing the Censored Largest Datum Under Weighted Least Squares Method}
 \description{
-The method is developed only for imputing the last largest censored datum if Kaplan-Meier weights are involved in modeling. The treating/imputing methods for the last largest censored datum under weighted least squares is developed for overcoming the problem that the tail correction (Efron, 1967) results in biased and inefficient estimates. Details are discussed in Khan and Shaw (2013a).
+The method gives imputed values for the last largest censored datum.
 }
 \usage{
 imputeYn(X, Y, delta, method = "condMean", beta = NULL)
@@ -26,7 +26,7 @@ coefficients of the covariates estimated by any suitable method chosen by the us
 }
 
 \details{
-For details, see Khan and Shaw (2013a, 2013b).
+The method is developed only for imputing the last largest censored datum if Kaplan-Meier weights are involved in modeling. The treating/imputing methods for the last largest censored datum under weighted least squares is developed for overcoming the problem that the tail correction (Efron, 1967) results in biased and inefficient estimates. Details are discussed in Khan and Shaw (2013a). For details, see Khan and Shaw (2013a, 2013b).
 }
 \value{
 An "imputeYn" object is returned. It includes imputed value for the datum Y(n)+, response with imputed value for Y(n)+, status after reclassifying Y(n)+ into Y(n), coefficients of the covariates obtained with imputed value (newcoefficients) by aft.qp, and coefficients obtained without imputed value (coefficients) by aft.qp. 
@@ -48,8 +48,8 @@ Hasinur Rahaman Khan and Ewart Shaw
 
 \examples{
 # For uncorrelated dataset
-data<-data(n=100, p=4, r=0, b1=c(2,2,3,3), sig=1, Cper=0)
-imp<-imputeYn(data$x, data$y, data$delta, method = "condMean", beta=NULL)
+data1<-data(n=100, p=4, r=0, b1=c(2,2,3,3), sig=1, Cper=0)
+imp<-imputeYn(data1$x, data1$y, data1$delta, method = "condMean", beta=NULL)
 imp
 
 # For correlated dataset

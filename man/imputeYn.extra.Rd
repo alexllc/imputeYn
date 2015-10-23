@@ -2,9 +2,9 @@
 \alias{imputeYn.extra}
 
 \title{
-Impute them if there are more than one censored largest observations including tied under weighted least squares method and right censoring}
+Imputing the Last Largest tied Observations with a new method}
 \description{
-The method is developed for imputing the largest censored observations (can be seen often for heavy censored data) if Kaplan-Meier weights are involved in modeling. For example, if weighted least squares is used then the extra imputing methods will provide one step ahead of the Efron's (1967) tail correction approach. These methods satisfy the Efron's tail correction, achieve less biased estimates, and impute the largest censored observations that are also tied. Furthermore the two methods satisfy the right censoring assumption. Details are discussed in Khan and Shaw (2013a).
+The method provides one step ahead imputed values for tied censored observations.
 }
 
 \usage{
@@ -39,7 +39,7 @@ If TRUE then Kaplan-Meier survival plots will be printed for both data- the orig
 }
 }
 \details{
-If there is heavy censoring toward the right for right censored data, that is found as typical case for many areas like indistry, clinical trials etc, then this function provides the sensible imputations for those censored observations that are the largest and also tied observations. For details, see Khan and Shaw (2012b).
+The method is developed for imputing the largest censored observations (can be seen often for heavy censored data) if Kaplan-Meier weights are involved in modeling. For example, if weighted least squares is used then the extra imputing methods will provide one step ahead of the Efron's (1967) tail correction approach. These methods satisfy the Efron's tail correction, achieve less biased estimates, and impute the largest censored observations that are also tied. Furthermore the two methods satisfy the right censoring assumption. If there is heavy censoring toward the right for right censored data, that is found as typical case for many areas like indistry, clinical trials etc, then this function provides the sensible imputations for those censored observations that are the largest and also tied observations. Details are discussed in Khan and Shaw (2013a).
 }
 \value{
 It includes sorted lifetimes, censoring indicators, sorted lifetimes after imputation, censoring indicators after imputation, censored lifetimes for the Y(n)+ observations, imputed lifetimes for the Y(n)+ observations, the survival times, the survival probabilities, the survival times after transformation, the survival probabilities after transformation, the transformation used, and trace.
@@ -55,16 +55,16 @@ Khan and Shaw (2013b). Variable Selection with The Modified Buckley-James Method
 Hasinur Rahaman Khan and Ewart Shaw}
 \examples{
 ## For Channing House data (heavy censored data)##
-\donttest{data(package = "boot", channing)}
-\donttest{time.ch<-channing[1:97,]$time} #for male
-\donttest{delta.ch<-channing[1:97,]$cens} # for male
-\donttest{hc.Yn.m<-rep(137,19)} # there are 19 last largest censored male each has 137 lifetime
-\donttest{imp.PDQ<-imputeYn.extra(time.ch, delta.ch,  hc.Yn=hc.Yn.m, 
+\dontrun{require(package="boot")}
+\dontrun{time.ch<-channing[1:97,]$time} #for male
+\dontrun{delta.ch<-channing[1:97,]$cens} # for male
+\dontrun{hc.Yn.m<-rep(137,19)} # there are 19 last largest censored male each has 137 lifetime
+\dontrun{imp.PDQ<-imputeYn.extra(time.ch, delta.ch,  hc.Yn=hc.Yn.m, 
   method="it.PDQ", trace=T)}
-\donttest{imp.PDQ}
+\dontrun{imp.PDQ}
 
-\donttest{imp.TPQ<-imputeYn.extra(time.ch, delta.ch, hc.Yn=hc.Yn.m, 
+\dontrun{imp.TPQ<-imputeYn.extra(time.ch, delta.ch, hc.Yn=hc.Yn.m, 
   method = "km.TPQ", trace=T)}
-\donttest{imp.TPQ}
+\dontrun{imp.TPQ}
 }
 \keyword{imputation}
