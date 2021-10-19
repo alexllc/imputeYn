@@ -221,7 +221,7 @@ imputeYn<-function(X, Y, delta, method = "condMean", beta=NULL)
     Y<-Y[srt]
     delta<-delta[srt]
 	
-    sdelta<-as.integer(delta[srt])
+    sdelta<-as.integer(delta)
     if(sdelta[nn]!=0)
     stop("The largest observation is not censored!")
 
