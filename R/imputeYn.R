@@ -215,6 +215,12 @@ imputeYn<-function(X, Y, delta, method = "condMean", beta=NULL)
     {
     nn <- length(Y) # number of samples
     srt<-order(Y) 
+	
+    # sort all X, Y, delta before computing further
+    X<-X[srt,]
+    Y<-Y[srt]
+    delta<-delta[srt]
+	
     sdelta<-as.integer(delta[srt])
     if(sdelta[nn]!=0)
     stop("The largest observation is not censored!")
