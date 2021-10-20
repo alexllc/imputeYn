@@ -211,19 +211,23 @@ lss.mod<-function(formula, data, subset, trace=FALSE, mcsize=500, maxiter=10, to
 }
 
 
-imputeYn<-function(X, Y, delta, method = "condMean", beta=NULL)
+imputeYn<-function(X, Y, delta, method = "condMean", beta=NULL, onlyLargest = TRUE)
     {
     nn <- length(Y) # number of samples
     srt<-order(Y) 
 	
+    if(onlyLargest) {
     # sort all X, Y, delta before computing further
-    X<-X[srt,]
-    Y<-Y[srt]
-    delta<-delta[srt]
-	
-    sdelta<-as.integer(delta)
-    if(sdelta[nn]!=0)
-    stop("The largest observation is not censored!")
+	X<-X[srt,]
+	Y<-Y[srt]
+	delta<-delta[srt]
+	sdelta<-as.integer(delta)
+	    
+	if(sdelta[nn]!=0)
+	    stop("The largest observation is not censored!")
+    } else {
+	    sdelta<-as.integer(delta[srt]) # if we're making imputation for all values, then the sorted delta does not matter that much anymore. But we're keeping it here just in case.
+	    }
 
 	if(method=="PDQ"){
 	beta<-NULL
